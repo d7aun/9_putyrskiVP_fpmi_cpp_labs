@@ -94,7 +94,7 @@ void f3(double ar[maxLength], int size)
 					
 				}
 			/*
-			Эта цикл, служащий для переброски нулей в конец массива, нужен,
+			Этот цикл, служащий для переброски нулей в конец массива, нужен,
             если используем f3 отдельно
 			(без f1, которая преобразует исходный массив)
 			*/
@@ -110,9 +110,9 @@ int main()
 	double ar[maxLength], arNmbr;
 	std::cout << "Input size of array:\n";
 	tryRead(size);
-	if (size > maxLength)
+	if (size > maxLength || size < 1)
 	{
-		std::cout << "Less than 100, please";
+		std::cout << "Less than 100 (or maybe more than 0), please\n";
 		exit(0);
 	}
 	std::cout << "How to fill the array (enter the number):\nRandom(1)    By hand(2)\n";
