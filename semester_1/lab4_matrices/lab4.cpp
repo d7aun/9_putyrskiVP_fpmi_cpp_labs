@@ -1,4 +1,4 @@
-﻿#include <iostream>
+#include <iostream>
 #include <random>
 #include <iomanip>
 //lab4 task5
@@ -18,11 +18,41 @@ void tryReadDouble(double& number)
 		exit(0);
 	}
 }
+int matrixSize(int** matrix, int maxNumberLines)
+{
+	std::cout << "The matrix is square. Input number of lines/columns of matrix:\n";
+	int numberLines;
+	tryRead(numberLines);
+	if (numberLines > maxNumberLines || numberLines < 1)
+	{
+		std::cout << "Less than 100 (or maybe more than 0), please\n";
+		exit(0);
+	}
+	return (numberLines);
+}
 void swap(int& a, int& b)
 {
 	a += b;
-	b = b - a;
-	a = b - a;
+	b = a - b;
+	a = a - b;
+}
+void largestElement(int** matrix, int numberLines)
+{
+	std::cout << "Largest element in lower right triangle of the matrix:\n";
+	int maxElement = matrix[0][numberLines - 1];
+	int i = 1, j = numberLines - 1;
+	while (i < numberLines)
+	{
+		while (j >= numberLines - i - 1)
+		{
+			if (matrix[i][j] > maxElement)
+				maxElement = matrix[i][j];
+			j--;
+		}
+		j = numberLines - 1;
+		i++;
+	}
+	std::cout << maxElement << std::endl << std::endl;
 }
 void byHandMatrixFilling(int** matrix, int numberLines)
 {
@@ -79,7 +109,7 @@ void swapNearbyMatrixLineElements(int** matrix, int line, int j)
 }
 void swapNearbyMatrixColumnElements(int** matrix, int line, int j)
 {
-	matrix[line-1][j] += matrix[line][j];
+	matrix[line - 1][j] += matrix[line][j];
 	matrix[line][j] = matrix[line-1][j] - matrix[line][j];
 	matrix[line - 1][j] = matrix[line - 1][j] - matrix[line][j];
 }
@@ -121,34 +151,13 @@ int main()
 	for (int i = 0; i <  maxNumberLines; i++)
 		matrix[i] = new int[maxNumberLines];
 
-	std::cout << "The matrix is square. Input number of lines/columns of matrix:\n";
-	int numberLines;
-	tryRead(numberLines);
-	if (numberLines > maxNumberLines || numberLines < 1)
-	{
-		std::cout << "Less than 100 (or maybe more than 0), please\n";
-		exit(0);
-	}
+	int numberLines = matrixSize(matrix, maxNumberLines);
 
 	fillMatrix(matrix, numberLines);
 
 	YourMatrixIs(matrix, numberLines);
 
-	std::cout << "Largest element in lower right triangle of the matrix:\n";
-	int maxElement = matrix[0][numberLines - 1];
-	int i = 1, j = numberLines - 1;
-	while (i < numberLines)
-	{
-		while (j >= numberLines - i - 1)
-		{
-			if (matrix[i][j] > maxElement)
-				maxElement = matrix[i][j];
-			j--;
-		}
-		j = numberLines - 1;
-		i++;
-	}
-	std::cout << maxElement << std::endl << std::endl;
+	largestElement(matrix, numberLines);
 	
 	matrixLineSorting(matrix, numberLines);
 
