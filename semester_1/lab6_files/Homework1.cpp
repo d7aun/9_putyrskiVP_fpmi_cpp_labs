@@ -1,15 +1,15 @@
-﻿#include <iostream>
+#include <iostream>
 #include <string>
 #include <algorithm>
 #include <vector>
 int stInt(std::string st) {
     if ((st[0] < '0' || st[0] > '9') && st[0] != '-')
-        throw "a must be integer, b must be unsigned\n";
+        throw "a/d: a must be integer, b must be unsigned\n";
     int a = stoi(st);
     std::string xst = std::to_string(a);
     if (st == xst)
         return a;
-    else throw "Enter fraction as a/b: a is integer, b is unsigned\n";
+    else throw "a/b: a is integer, b is unsigned\n";
 }
 struct fraction {
     int num;
@@ -67,24 +67,17 @@ struct fraction {
         return *this;
     }
     friend bool operator == (const fraction& k, const fraction& p) {
-        if (p.den * k.num == p.num * k.den)
-            return true;
-        return false;
+        return (k.num * p.den == p.num * k.den);
     }
     friend bool operator != (const fraction& k, const fraction& p) {
-        if (k == p)
-            return false;
-        return true;
+        return !(k == p);
     }
     friend bool operator > (const fraction& k, const fraction& p) {
-        if (k.num * p.num > 0)
-            return (p.den * k.num > p.num * k.den);
-        return !(p.den * k.num > p.num * k.den);
+        std::cout << k.num * p.den << "  " << p.num * k.den;
+        return (k.num * p.den > p.num * k.den);
     }
     friend bool operator < (const fraction& k, const fraction& p) {
-        if (k.num * p.num > 0)
-            return (p.den * k.num < p.num * k.den);
-        return !(p.den * k.num < p.num * k.den);
+        return (k.num * p.den < p.num * k.den);
     }
     friend bool operator >= (const fraction& k, const fraction& p) {
         return !(k < p);
@@ -109,15 +102,15 @@ struct fraction {
         getline(in, fra);
         size_t i = fra.find("/");
         if (i == std::string::npos) {
-            throw "Enter fraction as a/b: a is integer, b is positive integer\n";
+            throw "a/b: a is integer, b is positive integer\n";
         }
         std::string stNum, stDen;
         stNum = fra.substr(0, i);
         p.num = stInt(stNum);
         stDen = fra.substr(i + 1);
         p.den = stInt(stDen);
-        if (p.den == 0)
-            throw "b must be positive integer\n";
+        if (p.den <= 0)
+            throw "a/b: b must be positive integer\n";
         return p;
     }
 };
@@ -134,21 +127,7 @@ void swapFr(fraction& a, fraction& b) {
 
 int main()
 {
-    std::cout << "Fraction is a / b: a is integer, b is positive integer\nTests:\n";
-    fraction fr(3, 2), ffr(4, 5);
-    fraction fffr = -fr + ffr;
-    fr++;
-    if (fr>=ffr)
-        std::cout << fffr << "  " << fr << std::endl;
-    fraction ur;
-    try {
-        std::cin >> ur;
-        std::cout << ur << "\n";
-    }
-    catch (const char* s) {
-        std::cerr << s;
-    }
-    std::cout << "End of tests.\n\n";
+    std::cout << "Fraction is a / b: a is integer, b is positive integer\n";
 
     std::vector <fraction> vec;
     int sz = 10,
