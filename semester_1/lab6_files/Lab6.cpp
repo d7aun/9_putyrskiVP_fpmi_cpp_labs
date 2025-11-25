@@ -26,7 +26,7 @@ size_t longestChainSize(std::string str)
 }
 int main()
 {
-	std::ofstream("yt.txt");
+	//std::ofstream("yt.txt");
 	std::string inputFile = "input.txt";
 	std::ifstream in;
 	in.open(inputFile);
@@ -57,3 +57,4 @@ int main()
 	}
 	std::cout << "Lines with longest increasing sublines (" << maxChain << " chars):\n" << longestChains;
 }
+
