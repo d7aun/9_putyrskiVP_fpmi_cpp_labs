@@ -85,16 +85,17 @@
 		if (size == cap) {
 			int* tmp;
 			if (cap != 0) {
-				tmp = new int[2 * cap];
 				cap *= 2;
+				tmp = new int[cap];
  			}
 			else {
 				cap = 1;
 				tmp = new int[1];
 			}
 				
-			for (size_t i = 0; i < size; ++i)
+			for (size_t i = 0; i < size; ++i) {
 				tmp[i] = data[i];
+			}
 			delete[] data;
 			data = tmp;
 		}
@@ -112,7 +113,15 @@
 	}
 	void Vector::Reserve(size_t xCap) {
 		if (xCap > cap)
+		{
 			cap = xCap;
+			int* tmp = new int[cap];
+			for (size_t i = 0; i < size; ++i) {
+				tmp[i] = data[i];
+			}
+			delete[] data;
+			data = tmp;
+		}
 	}
 
 	std::ostream& operator<<(std::ostream& out, const Vector& vec) {
