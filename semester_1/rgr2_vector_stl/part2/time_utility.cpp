@@ -37,10 +37,13 @@ std::time_t GenerateRandomTime(std::mt19937& generator) {
     return generated_time;
 }
 
-void PrintTime(const std::time_t& time_to_print) {
-
-    std::tm* ltime = std::localtime(&time_to_print);
-    std::cout << std::asctime(ltime);
-}
+void PrintTime(const std::time_t& time_to_print)
+	{
+		char* tmp = std::asctime(std::localtime(&time_to_print));
+		int size = sizeof(tmp) / sizeof(char);
+		std::string forOut(tmp);
+		forOut.pop_back();
+		std::cout<< forOut;
+	}
 
 }  // namespace time_utility
