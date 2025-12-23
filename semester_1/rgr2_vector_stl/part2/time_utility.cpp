@@ -7,24 +7,24 @@
 
 namespace time_utility {
 
-std::time_t SetTime(size_t hours, size_t minutes) {
+std::time_t SetTime(size_t hours, size_t minutes)
+	{
+		if (hours > MAX_HOUR_NUMBER_PER_DAY)
+			throw std::out_of_range("Wrong value of hours! (must be from 0 to 23)");
 
-    if (hours > MAX_HOUR_NUMBER_PER_DAY)
-        throw std::out_of_range("Wrong value of hours! (must be from 0 to 23)");
+		if (minutes > MAX_MINUTE_NUMBER_PER_HOUR)
+			throw std::out_of_range("Wrong value of minutes! (must be from 0 to 59)");
 
-    if (minutes > MAX_MINUTE_NUMBER_PER_HOUR)
-        throw std::out_of_range("Wrong value of minutes! (must be from 0 to 59)");
-
-    using std::chrono::system_clock;
-    std::time_t current_time = system_clock::to_time_t(std::chrono::system_clock::now());
-
-    std::tm* tm_result_time = std::localtime(&current_time);
-    tm_result_time->tm_hour = hours;
-    tm_result_time->tm_min = minutes;
-
-    std::time_t result_time = std::mktime(tm_result_time);
-    return result_time;
-}
+		std::time_t now = time(NULL);
+		int dayInSec = 60 * 60 * 24;
+		now -= (now % dayInSec);
+		//now += (hours * 60 + minutes) * 60; - Неверно
+		//Т.к время в Беларуси - GMT+3, то мы должны из кол-ва часов вычесть эти самые 3 часика. т.е 3 * 3600сек
+		//Это всё из-за локалТайма в выводе))
+		now -= 3 * 3600;
+		now += (hours * 60 + minutes) * 60;
+		return now;
+	}
 
 std::time_t GenerateRandomTime(std::mt19937& generator) {
     std::uniform_int_distribution<size_t> hour_randomizer(0, MAX_HOUR_NUMBER_PER_DAY);
