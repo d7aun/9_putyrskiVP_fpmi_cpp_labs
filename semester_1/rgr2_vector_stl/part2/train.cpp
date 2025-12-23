@@ -43,7 +43,7 @@ bool isDigit(const std::string& s)
 }
 bool isInt(const std::string& s)
 {
-	if (s.size() > 9)
+	if (!isDigit(s))
 		return 0;
 	int a = stoi(s);
 	std::string reS = std::to_string(a);
@@ -280,3 +280,4 @@ void displayFastestTrainInfo_destination(std::vector<Train>& v, std::string dest
 	else
 		std::cout << "No such trains\n";
 }
+
